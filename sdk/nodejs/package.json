@@ -1,19 +1,19 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@pulumi/azure",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/aws": "^4.0.0"
+        "@pulumi/azure-native": "^2.0.0",
+        "@pulumi/pulumi": "^3.42.0"
     },
     "devDependencies": {
+        "@types/node": "^14",
         "typescript": "^3.7.0"
     },
-    "peerDependencies": {
-        "@pulumi/pulumi": "latest"
-    },
     "pulumi": {
-        "resource": true
+        "resource": true,
+        "name": "azure"
     }
 }

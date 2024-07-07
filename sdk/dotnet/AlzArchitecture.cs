@@ -7,17 +7,11 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Xyz
+namespace Pulumi.Azure
 {
-    [XyzResourceType("xyz:index:StaticPage")]
-    public partial class StaticPage : Pulumi.ComponentResource
+    [AzureResourceType("azure:index:AlzArchitecture")]
+    public partial class AlzArchitecture : global::Pulumi.ComponentResource
     {
-        /// <summary>
-        /// The bucket resource.
-        /// </summary>
-        [Output("bucket")]
-        public Output<Pulumi.Aws.S3.Bucket> Bucket { get; private set; } = null!;
-
         /// <summary>
         /// The website URL.
         /// </summary>
@@ -26,14 +20,14 @@ namespace Pulumi.Xyz
 
 
         /// <summary>
-        /// Create a StaticPage resource with the given unique name, arguments, and options.
+        /// Create a AlzArchitecture resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public StaticPage(string name, StaticPageArgs args, ComponentResourceOptions? options = null)
-            : base("xyz:index:StaticPage", name, args ?? new StaticPageArgs(), MakeResourceOptions(options, ""), remote: true)
+        public AlzArchitecture(string name, AlzArchitectureArgs args, ComponentResourceOptions? options = null)
+            : base("azure:index:AlzArchitecture", name, args ?? new AlzArchitectureArgs(), MakeResourceOptions(options, ""), remote: true)
         {
         }
 
@@ -50,16 +44,29 @@ namespace Pulumi.Xyz
         }
     }
 
-    public sealed class StaticPageArgs : Pulumi.ResourceArgs
+    public sealed class AlzArchitectureArgs : global::Pulumi.ResourceArgs
     {
         /// <summary>
-        /// The HTML content for index.html.
+        /// The name of the ALZ architecture from the library.
         /// </summary>
-        [Input("indexContent", required: true)]
-        public Input<string> IndexContent { get; set; } = null!;
+        [Input("architectureName", required: true)]
+        public Input<string> ArchitectureName { get; set; } = null!;
 
-        public StaticPageArgs()
+        /// <summary>
+        /// The default location of the architecture.
+        /// </summary>
+        [Input("location", required: true)]
+        public Input<string> Location { get; set; } = null!;
+
+        /// <summary>
+        /// The root management group ID.
+        /// </summary>
+        [Input("rootManagementGroupId", required: true)]
+        public Input<string> RootManagementGroupId { get; set; } = null!;
+
+        public AlzArchitectureArgs()
         {
         }
+        public static new AlzArchitectureArgs Empty => new AlzArchitectureArgs();
     }
 }

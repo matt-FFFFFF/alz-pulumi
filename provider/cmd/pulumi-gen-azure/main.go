@@ -17,7 +17,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -53,15 +52,20 @@ func emitSDK(language, outdir, schemaPath string) error {
 
 	tool := "Pulumi SDK Generator"
 	extraFiles := map[string][]byte{}
+	localDependencies := map[string]string{}
 
 	var generator func() (map[string][]byte, error)
 	switch language {
 	case "dotnet":
-		generator = func() (map[string][]byte, error) { return dotnetgen.GeneratePackage(tool, pkg, extraFiles) }
+		generator = func() (map[string][]byte, error) {
+			return dotnetgen.GeneratePackage(tool, pkg, extraFiles, localDependencies)
+		}
 	case "go":
 		generator = func() (map[string][]byte, error) { return gogen.GeneratePackage(tool, pkg) }
 	case "nodejs":
-		generator = func() (map[string][]byte, error) { return nodejsgen.GeneratePackage(tool, pkg, extraFiles) }
+		generator = func() (map[string][]byte, error) {
+			return nodejsgen.GeneratePackage(tool, pkg, extraFiles, localDependencies)
+		}
 	case "python":
 		generator = func() (map[string][]byte, error) { return pygen.GeneratePackage(tool, pkg, extraFiles) }
 	default:
@@ -83,7 +87,7 @@ func emitSDK(language, outdir, schemaPath string) error {
 }
 
 func readSchema(schemaPath string) (*schema.Package, error) {
-	schemaBytes, err := ioutil.ReadFile(schemaPath)
+	schemaBytes, err := os.ReadFile(schemaPath)
 	if err != nil {
 		return nil, errors.Wrap(err, "reading schema")
 	}
@@ -112,7 +116,7 @@ func emitFile(rootDir, filename string, contents []byte) error {
 	if err := os.MkdirAll(filepath.Dir(outPath), 0755); err != nil {
 		return err
 	}
-	if err := ioutil.WriteFile(outPath, contents, 0600); err != nil {
+	if err := os.WriteFile(outPath, contents, 0600); err != nil {
 		return err
 	}
 	return nil

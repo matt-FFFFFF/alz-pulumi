@@ -1,39 +1,43 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/pulumi/pulumi/master/pkg/codegen/schema/pulumi.json
 ---
-name: xyz
+name: azure
 resources:
-  xyz:index:StaticPage:
+  azure:index:AlzArchitecture:
     isComponent: true
     inputProperties:
-      indexContent:
+      architectureName:
         type: string
-        description: The HTML content for index.html.
+        description: The name of the ALZ architecture from the library.
+      location:
+        type: string
+        description: The default location of the architecture.
+      rootManagementGroupId:
+        type: string
+        description: The root management group ID.
     requiredInputs:
-      - indexContent
+      - architectureName
+      - location
+      - rootManagementGroupId
     properties:
-      bucket:
-        "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
-        description: The bucket resource.
       websiteUrl:
         type: string
         description: The website URL.
     required:
-      - bucket
       - websiteUrl
 language:
   csharp:
     packageReferences:
       Pulumi: 3.*
-      Pulumi.Aws: 4.*
+      Pulumi.AzureNative: 2.*
   go:
     generateResourceContainerTypes: true
-    importBasePath: github.com/pulumi/pulumi-xyz/sdk/go/xyz
+    importBasePath: github.com/matt-FFFFFF/pulumi-azure-alz/sdk/go/azure
   nodejs:
     dependencies:
-      "@pulumi/aws": "^4.0.0"
+      "@pulumi/azure-native": "^2.0.0"
     devDependencies:
       typescript: "^3.7.0"
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
-      pulumi-aws: ">=4.0.0,<5.0.0"
+      pulumi-azure-native: ">=2.0.0,<3.0.0"
